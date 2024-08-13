@@ -34,6 +34,7 @@ body {
 h1 {
   font-size: 6em;
   line-height: 1.1;
+  padding: 0.5em;
 }
 
 h2 {
@@ -69,41 +70,39 @@ button:focus-visible {
   transition: border-color 0.25s;
 }
 
-
-
-.selected {
+/* .selected {
   width: 5.3em;
   height: 2px;
   background-color: #646cff;
   margin-left: 3.8em;
-}
+} */
 
 .barbell {
-  width: 22em;
-  height: 10px;
-  background-color: grey;
+  width: 48em;
+  height: 0.5em;
+  background-color: silver;
   position: relative;
   margin: 20px auto;
 }
 
 .plate-left {
   position: absolute;
-  height: 92px;
-  width: 0.27em; /* Increase the width to make it wider */
+  height: 9.81em;
+  width: 2%; /* Increase the width to make it wider */
   background-color: #646cff;
-  margin: 5px; /* Decrease the margin to make it shorter */
-  top: -46px; /* Raise the y position to overlap through the center */
-  left: 83.3%; /* Adjust the left position to bring it closer to the middle */
+  top: 50%; /* Set the top position to 50% */
+  transform: translateY(-50%); /* Move the element up by 50% of its own height */
+  left: 19.68%; /* Adjust the left position to bring it closer to the middle */
 }
 
 .plate-right {
   position: absolute;
-  height: 92px;
-  width: 0.27em; /* Increase the width to make it wider */
+  height: 9.81em;
+  width: 2%; /* Increase the width to make it wider */
   background-color: #646cff;
-  margin: 5px; /* Decrease the margin to make it shorter */
-  top: -46px; /* Raise the y position to overlap through the center */
-  right: 83.3%; /* Adjust the right position to bring it closer to the middle */
+  top: 50%; /* Set the top position to 50% */
+  transform: translateY(-50%); /* Move the element up by 50% of its own height */
+  right: 19.68%; /* Adjust the right position to bring it closer to the middle */
 }
 
 input[type="number"] {
@@ -115,3 +114,40 @@ input[type="number"] {
   font-family:monospace;
 }
 
+@media (max-width: 768px) {
+  h1 {
+    font-size: 4em;
+  }
+
+  h2 {
+    font-size: 1.8em;
+  }
+
+  .barbell {
+    width: 27em;
+    height: 0.5em;
+    background-color: grey;
+    position: relative;
+    margin: 20px auto;
+  }
+  
+  .plate-left {
+    position: absolute;
+    height: 5.52em;
+    width: 2%; /* Increase the width to make it wider */
+    background-color: #646cff;
+    top: 50%; /* Raise the y position to overlap through the center */
+    transform: translateY(-50%); /* Move the element up by 50% of its own height */
+    left: 19.68%; /* Adjust the left position to bring it closer to the middle */
+  }
+  
+  .plate-right {
+    position: absolute;
+    height: 5.52em;
+    width: 2%; /* Increase the width to make it wider */
+    background-color: #646cff;
+    top: 50%; /* Raise the y position to overlap through the center */
+    transform: translateY(-50%); /* Move the element up by 50% of its own height */
+    right: 19.68%; /* Adjust the right position to bring it closer to the middle */
+  }
+}
