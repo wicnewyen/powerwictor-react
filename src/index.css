@@ -26,7 +26,7 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  align-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -34,7 +34,6 @@ body {
 h1 {
   font-size: 6em;
   line-height: 1.1;
-  padding: 0.5em;
 }
 
 h2 {
@@ -43,6 +42,12 @@ h2 {
 }
 h2:hover{
   color: #646cff;
+}
+
+h3{
+  font-size: 2em;
+  line-height: 1.1;
+  color: rgb(134, 134, 134);
 }
 
 button {
@@ -61,13 +66,31 @@ button:focus-visible {
   outline: none;
 }
 
+.entry {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+}
+.currentUnit {
+  font-size: 2em;
+  font-weight: 500;
+  font-family: inherit;
+  margin-right: 0.5em;
+}
+
 .unit {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
   gap: 18em;
   border: 1px solid transparent;
   transition: border-color 0.25s;
+}
+.selected {
+  color: #646cff;
 }
 
 /* .selected {
@@ -78,11 +101,12 @@ button:focus-visible {
 } */
 
 .barbell {
+  display: flex;
   width: 48em;
   height: 0.5em;
   background-color: silver;
   position: relative;
-  margin: 20px auto;
+  margin: 0 auto;
 }
 
 .plate-left {
@@ -106,12 +130,13 @@ button:focus-visible {
 }
 
 input[type="number"] {
-  width: 2.57em;
+  width: 3em;
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 2em;
-  font-family:monospace;
+  font-family: monospace;
+  text-align: center;
 }
 
 @media (max-width: 768px) {
@@ -121,6 +146,10 @@ input[type="number"] {
 
   h2 {
     font-size: 1.8em;
+  }
+
+  h3 {
+    font-size: 1.5em;
   }
 
   .barbell {
