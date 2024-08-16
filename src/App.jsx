@@ -102,10 +102,35 @@ function App() {
     }
   }
 
+  const getPlateCount = (plateStack, unit) => {
+    const plateCount = {};
+    let output = "";
+
+    plateStack.forEach(plate => {
+      if (plateCount[plate.weight]) {
+        plateCount[plate.weight]+=2;
+      } else {
+        plateCount[plate.weight] = 2;
+      }
+    });
+
+    const sortedEntries = Object.entries(plateCount).sort((a, b) => b[0] - a[0]);
+
+    sortedEntries.forEach(([key, value], index) => {
+      if (index === sortedEntries.length - 1) {
+        output += `${value} x ${key} ${unit}`;
+      } else {
+        output += `${value} x ${key} ${unit}, `;
+      }
+    });
+    return output;
+  }
+
   return (
     <>
       <div className="calculatedWeight">{getTotalWeight(plates, unit)} {unit} =  {convertUnit(
         getTotalWeight(plates, unit), unit).toFixed(2)} {unit === 'kg' ? 'lb' : 'kg'}
+        <p>{getPlateCount(plates, unit)}</p>
       </div>
 
       <div className="barbell">
@@ -125,6 +150,8 @@ function App() {
         </div>
           
       </div>
+
+
       <h1>powerwictor</h1>
       <div className="entry">
         <input type="number" id="inputWeight" value={weight} onChange={(e) => {
