@@ -30,6 +30,13 @@ body {
   min-height: 100vh;
 }
 
+.calculatedWeight{
+  font-size: 2em;
+  font-weight: 500;
+  font-family: inherit;
+  margin-bottom: 3em;
+}
+
 h1 {
   font-size: 6em;
   line-height: 1.1;

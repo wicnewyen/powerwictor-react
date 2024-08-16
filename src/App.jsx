@@ -81,8 +81,33 @@ function App() {
       || backgroundColor === 'silver' ? 'black' : 'white';
   };
 
+  const getTotalWeight = (plates, unit) => {
+    let total = 0;
+    if (unit === 'kg') {
+      total = 20;
+    } else {
+      total = 45;
+    }
+    for (const plate of plates) {
+      total += plate.weight * 2;
+    }
+    return total;
+  }
+
+  const convertUnit = (weight, unit) => {
+    if (unit === 'kg') {
+      return weight * 2.20462;
+    } else {
+      return weight / 2.20462;
+    }
+  }
+
   return (
     <>
+      <div className="calculatedWeight">{getTotalWeight(plates, unit)} {unit} =  {convertUnit(
+        getTotalWeight(plates, unit), unit).toFixed(2)} {unit === 'kg' ? 'lb' : 'kg'}
+      </div>
+
       <div className="barbell">
         <div className="leftPlates">
           {plates.map((plate, index) => (
@@ -100,7 +125,6 @@ function App() {
         </div>
           
       </div>
-      
       <h1>powerwictor</h1>
       <div className="entry">
         <input type="number" id="inputWeight" value={weight} onChange={(e) => {
