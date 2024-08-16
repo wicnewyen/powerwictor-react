@@ -2,15 +2,18 @@ import { useState, useEffect} from 'react'
 import './App.css'
 
 function calculatePlatesKG(weight) {
-  const barWeight = 25;
+  const barWeight = 20;
+  if (weight < barWeight) {
+    weight = barWeight;
+  }
   const plates = [
-    { weight: 25, color: 'red' },
-    { weight: 20, color: 'blue' },
-    { weight: 15, color: 'yellow' },
-    { weight: 10, color: 'green' },
-    { weight: 5, color: 'white' },
-    { weight: 2.5, color: 'black' },
-    { weight: 1.25, color: 'silver' }
+    { weight: 25, color: 'red', height: '9.81em'},
+    { weight: 20, color: 'blue', height: '9.81em'},
+    { weight: 15, color: 'yellow', height: '8.72em'},
+    { weight: 10, color: 'green', height: '7.085em'},
+    { weight: 5, color: 'white', height: '4.97em'},
+    { weight: 2.5, color: 'black', height: '4.142em'},
+    { weight: 1.25, color: 'silver', height: '3.488em'}
   ];
 
   let weightEachSide = (weight - barWeight) / 2;
@@ -32,14 +35,16 @@ function calculatePlatesKG(weight) {
 function calculatePlatesLB(weight) {
 
   const barWeight = 45;
-
+  if (weight < barWeight) {
+    weight = barWeight;
+  }
   const plates = [
-    { weight: 45, color: '#646cff' },
-    { weight: 35, color: '#646cff' },
-    { weight: 25, color: '#646cff' },
-    { weight: 10, color: '#646cff' },
-    { weight: 5, color: '#646cff' },
-    { weight: 2.5, color: '#646cff' },
+    { weight: 45, color: '#646cff', height: '9.81em'},
+    { weight: 35, color: '#646cff', height: '7.848em'},
+    { weight: 25, color: '#646cff', height: '6.11em'},
+    { weight: 10, color: '#646cff', height: '4.989em'},
+    { weight: 5, color: '#646cff', height: '4.344em'},
+    { weight: 2.5, color: '#646cff', height: '3.53em'},
   ]
 
   let weightEachSide = (weight - barWeight) / 2;
@@ -61,7 +66,7 @@ function calculatePlatesLB(weight) {
 function App() {
   const [weight, setWeight] = useState(135)
   const [unit, setUnit] = useState('lb')
-  const [plates, setPlates] = useState([{weight: 45, color: '#646cff'}])
+  const [plates, setPlates] = useState([{weight: 45, color: '#646cff', height: '9.81em'}])
 
   useEffect(() => {
     if (unit === 'kg') {
@@ -71,20 +76,9 @@ function App() {
     }
   }, [weight, unit]);
 
-  const handleKgChange = (e) => {
-    const value = parseFloat(e.target.value);
-    setWeight(value);
-    setUnit('kg');
-  };
-
-  const handleLbChange = (e) => {
-    const value = parseFloat(e.target.value);
-    setWeight(value);
-    setUnit('lb');
-  };
-
   const getTextColor = (backgroundColor) => {
-    return backgroundColor === 'white' ? 'black' : 'white';
+    return backgroundColor === 'white' || backgroundColor === 'yellow' 
+      || backgroundColor === 'silver' ? 'black' : 'white';
   };
 
   return (
@@ -92,12 +86,16 @@ function App() {
       <div className="barbell">
         <div className="leftPlates">
           {plates.map((plate, index) => (
-            <div key={index} className = "plate-left" style={{ backgroundColor: plate.color, color: getTextColor(plate.color)}}> {plate.weight} </div>
+            <div key={index} className = "plate-left" style={{ backgroundColor: plate.color, color: getTextColor(plate.color), height: plate.height}}> 
+              <div className = 'weightLabel'>{plate.weight} </div>
+              </div>
           )).reverse()}
         </div>
         <div className="rightPlates">
           {plates.map((plate, index) => (
-            <div key={index} className = "plate-right" style={{ backgroundColor: plate.color, color: getTextColor(plate.color)}}> {plate.weight}</div>
+            <div key={index} className = "plate-right" style={{ backgroundColor: plate.color, color: getTextColor(plate.color), height: plate.height}}> 
+            <div className = 'weightLabel'>{plate.weight} </div>
+            </div>
           ))}
         </div>
           

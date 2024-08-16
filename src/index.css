@@ -1,5 +1,4 @@
 :root {
-  /* font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif; */
   font-family:monospace;
   line-height: 1.5;
   font-weight: 400;
@@ -95,68 +94,71 @@ button:focus-visible {
 
 .barbell {
   display: flex;
-  width: 48em;
+  width: 50em;
   height: 0.5em;
   background-color: silver;
   position: relative;
   margin: 0 auto;
 }
 
-.plate-left {
+.plate-left, .plate-right {
   height: 9.81em;
-  width: 2%; /* Increase the width to make it wider */
-  writing-mode: vertical-rl; /* Set the writing mode to vertical */
-  text-orientation: upright; /* Set the text orientation to upright */
-  border: 0.05em solid black; /* Add a border */
+  width: 1.22%;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  border: 0.05em solid black;
+  border-radius: 5px;
+  align-self: center;
 }
 
-.plate-right {
-  height: 9.81em;
-  width: 2%; /* Increase the width to make it wider */
-  writing-mode: vertical-rl; /* Set the writing mode to vertical */
-  text-orientation: upright; /* Set the text orientation to upright */
-  border: 0.05em solid black; /* Add a border */
+.weightLabel {
+  font-size: 0.7em;
+  width: 100px;
+}
+
+.leftPlates, .rightPlates {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  transform: translateY(-50%);
 }
 
 .leftPlates {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
   justify-content: right;
-  margin-right: 1em;
-
-  position: absolute;
-  right: 80.32%; /* Adjust the left position to bring it closer to the middle */
-  transform: translateY(-50%); /* Move the element up by 50% of its own height */
+  right: 80.32%; 
 }
 
 .rightPlates {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
   justify-content: left;
-  margin-left: 1em;
-
-  position: absolute;
-  top: 50%; /* Set the top position to 50% */
-  transform: translateY(-50%); /* Move the element up by 50% of its own height */
-  left: 80.32%; /* Adjust the right position to bring it closer to the middle */
-
+  left: 80.32%; 
 }
 
 input[type="number"] {
-  width: 3em;
+  width: 4em;
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 2em;
   font-family: monospace;
-  text-align: center;
+  text-align: right;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 430px) {
+  html, body {
+    overflow-x: hidden;
+  }
+  #root {
+    width: 430px;
+    display: flex;
+    flex-direction: column;
+    padding: 0px;
+  }
+  
   h1 {
     font-size: 4em;
+    text-align: center;
+    line-height: 4em;
   }
 
   h2 {
@@ -167,31 +169,25 @@ input[type="number"] {
     font-size: 1.5em;
   }
 
-  .barbell {
-    width: 27em;
-    height: 0.5em;
-    background-color: grey;
-    position: relative;
-    margin: 20px auto;
+  .plate-left, .plate-right {
+    background-color: #646cff;
   }
   
-  .plate-left {
-    position: absolute;
-    height: 5.52em;
-    width: 2%; /* Increase the width to make it wider */
-    background-color: #646cff;
-    top: 50%; /* Raise the y position to overlap through the center */
-    transform: translateY(-50%); /* Move the element up by 50% of its own height */
-    left: 19.68%; /* Adjust the left position to bring it closer to the middle */
+  .unit {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    border: 1px solid transparent;
+    transition: border-color 0.25s;
   }
-  
-  .plate-right {
-    position: absolute;
-    height: 5.52em;
-    width: 2%; /* Increase the width to make it wider */
-    background-color: #646cff;
-    top: 50%; /* Raise the y position to overlap through the center */
-    transform: translateY(-50%); /* Move the element up by 50% of its own height */
-    right: 19.68%; /* Adjust the right position to bring it closer to the middle */
+
+  .barbell{
+    width: 140em;
+  }
+
+  .weightLabel {
+    font-size: 1em;
   }
 }
