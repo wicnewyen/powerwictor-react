@@ -93,20 +93,20 @@ function App() {
         <div className="leftPlates">
           {plates.map((plate, index) => (
             <div key={index} className = "plate-left" style={{ backgroundColor: plate.color, color: getTextColor(plate.color)}}> {plate.weight} </div>
-          ))}
+          )).reverse()}
         </div>
         <div className="rightPlates">
           {plates.map((plate, index) => (
             <div key={index} className = "plate-right" style={{ backgroundColor: plate.color, color: getTextColor(plate.color)}}> {plate.weight}</div>
-          )).reverse()}
+          ))}
         </div>
           
       </div>
       
       <h1>powerwictor</h1>
       <div className="entry">
-        <input type="number" id="inputKilos" value={weight} onChange={(e) => {
-          setWeight(parseInt(e.target.value))
+        <input type="number" id="inputWeight" value={weight} onChange={(e) => {
+          setWeight(parseFloat(e.target.value))
         }} /> 
         <div className="currentUnit">{unit}</div>
 
