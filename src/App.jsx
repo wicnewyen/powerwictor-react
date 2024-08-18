@@ -104,13 +104,13 @@ function App() {
 
   const getPlateCount = (plateStack, unit) => {
     const plateCount = {};
-    let output = "";
+    let output = "EACH SIDE: ";
 
     plateStack.forEach(plate => {
       if (plateCount[plate.weight]) {
-        plateCount[plate.weight]+=2;
+        plateCount[plate.weight]+=1;
       } else {
-        plateCount[plate.weight] = 2;
+        plateCount[plate.weight] = 1;
       }
     });
 
