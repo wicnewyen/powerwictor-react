@@ -63,17 +63,58 @@ function calculatePlatesLB(weight) {
   return plateStack;
 }
 
+function calculatePlates(weight, unit) {
+  return unit === 'kg' ? calculatePlatesKG(weight) : calculatePlatesLB(weight);
+}
+
+const warmupSettings = {
+  lb: { bar: 45, jump: 90, increment: 5, minStep: 30 },
+  kg: { bar: 20, jump: 50, increment: 2.5, minStep: 15 },
+};
+
+// Add a big plate (45 lb / 25 kg) to each side until close to the top set,
+// then close the gap to the last warmup in even steps.
+function calculateWarmups(target, unit, reps) {
+  const { bar, jump, increment, minStep } = warmupSettings[unit];
+  const round = (weight) => Math.round(weight / increment) * increment;
+
+  // last warmup is ~40 lb under the top set for 1-3 reps, ~30 lb for 4+
+  const offset = reps === '1-3' ? 40 : 30;
+  const lastWarmup = round(target - (unit === 'kg' ? offset / 2.20462 : offset));
+  if (lastWarmup <= bar) {
+    return target > bar ? [bar] : [];
+  }
+
+  // stop adding plates past 85% of the top set or when crowding the last warmup
+  const warmups = [];
+  let base = bar;
+  while (base + jump <= target * 0.85 && base + jump <= lastWarmup - minStep / 2) {
+    base += jump;
+    warmups.push(base);
+  }
+  if (warmups.length === 0) {
+    warmups.push(bar);
+  }
+
+  // each remaining jump is at most 12.5% of the top set
+  const maxStep = Math.max(target * 0.125, minStep);
+  const steps = Math.ceil((lastWarmup - base) / maxStep);
+  for (let i = 1; i <= steps; i++) {
+    warmups.push(round(base + (lastWarmup - base) * i / steps));
+  }
+
+  return warmups;
+}
+
 function App() {
   const [weight, setWeight] = useState(135)
   const [unit, setUnit] = useState('lb')
   const [plates, setPlates] = useState([{weight: 45, color: '#646cff', height: '9.81em'}])
+  const [showWarmups, setShowWarmups] = useState(false)
+  const [reps, setReps] = useState('1-3')
 
   useEffect(() => {
-    if (unit === 'kg') {
-      setPlates(calculatePlatesKG(weight));
-    } else {
-      setPlates(calculatePlatesLB(weight));
-    }
+    setPlates(calculatePlates(weight, unit));
   }, [weight, unit]);
 
   const getTextColor = (backgroundColor) => {
@@ -104,7 +145,7 @@ function App() {
 
   const getPlateCount = (plateStack, unit) => {
     const plateCount = {};
-    let output = "EACH SIDE: ";
+    let output = "";
 
     plateStack.forEach(plate => {
       if (plateCount[plate.weight]) {
@@ -126,11 +167,13 @@ function App() {
     return output;
   }
 
+  const target = getTotalWeight(plates, unit);
+
   return (
     <>
       <div className="calculatedWeight">{getTotalWeight(plates, unit)} {unit} =  {convertUnit(
         getTotalWeight(plates, unit), unit).toFixed(2)} {unit === 'kg' ? 'lb' : 'kg'}
-        <p>{getPlateCount(plates, unit)}</p>
+        <p>EACH SIDE: {getPlateCount(plates, unit)}</p>
       </div>
 
       <div className="barbell">
@@ -171,11 +214,8 @@ function App() {
             <button className={unit === 'lb' ? 'selected' : ''} onClick={() => setUnit('lb')}>
               <h2>lb</h2>
             </button>
+            
         </div>
-        
-      </div>
-
-      <div id="selection">
         <div className="unit">
         <button className={unit === 'kg' ? 'selected' : ''} onClick={() => setUnit('kg')}>
               <h2>20 kg</h2>
@@ -185,10 +225,36 @@ function App() {
               <h2>45 lb</h2>
             </button>
         </div>
-        
       </div>
-      
-      
+
+      <div id="warmups">
+        <button className={showWarmups ? 'selected' : ''} onClick={() => setShowWarmups(!showWarmups)}>
+          <h2>warmups</h2>
+        </button>
+        {showWarmups && (
+          <>
+            <div className="unit">
+              <button className={reps === '1-3' ? 'selected' : ''} onClick={() => setReps('1-3')}>
+                <h2>1-3</h2>
+              </button>
+              <h3>reps</h3>
+              <button className={reps === '4+' ? 'selected' : ''} onClick={() => setReps('4+')}>
+                <h2>4+</h2>
+              </button>
+            </div>
+            <ol className="warmupList">
+              {[...calculateWarmups(target, unit, reps), target].map((warmup, index, sets) => (
+                <li key={index} className={index === sets.length - 1 ? 'topSet' : ''}>
+                  <span className="warmupWeight">{warmup} {unit}</span>
+                  <span className="warmupPlates">
+                    {getPlateCount(calculatePlates(warmup, unit), unit) || 'empty bar'}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </>
+        )}
+      </div>
     </>
   )
 }

@@ -144,6 +144,31 @@ button:focus-visible {
   left: 80.32%; 
 }
 
+.warmupList {
+  list-style: none;
+  max-width: 32em;
+  margin: 0 auto;
+  padding: 0;
+  font-size: 1.2em;
+}
+.warmupList li {
+  display: flex;
+  justify-content: space-between;
+  gap: 2em;
+  padding: 0.4em 0;
+  border-bottom: 1px solid #3a3a3a;
+}
+.warmupWeight {
+  white-space: nowrap;
+}
+.warmupPlates {
+  color: rgb(134, 134, 134);
+  text-align: right;
+}
+.topSet {
+  color: #646cff;
+}
+
 input[type="number"] {
   width: 4em;
   padding: 5px;
@@ -198,6 +223,13 @@ input[type="number"] {
   }
 
   .weightLabel {
+    font-size: 1em;
+  }
+
+  .warmupList {
+    width: 100%;
+    padding: 0 1em;
+    box-sizing: border-box;
     font-size: 1em;
   }
 }
