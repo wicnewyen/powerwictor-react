@@ -74,21 +74,26 @@ const warmupSettings = {
 
 // Add a big plate (45 lb / 25 kg) to each side until close to the top set,
 // then close the gap to the last warmup in even steps.
-function calculateWarmups(target, unit, reps) {
+function calculateWarmups(target, unit, lift, reps) {
   const { bar, jump, increment, minStep } = warmupSettings[unit];
   const round = (weight) => Math.round(weight / increment) * increment;
 
-  // last warmup is ~40 lb under the top set for 1-3 reps, ~30 lb for 4+
-  const offset = reps === '1-3' ? 40 : 30;
+  // last warmup is ~20 lb under the top set for bench; for squat/deadlift
+  // it's ~40 lb under for 1-3 reps, ~30 lb for 4+
+  const offset = lift === 'bench' ? 20 : reps === '1-3' ? 40 : 30;
   const lastWarmup = round(target - (unit === 'kg' ? offset / 2.20462 : offset));
   if (lastWarmup <= bar) {
     return target > bar ? [bar] : [];
   }
 
-  // stop adding plates past 85% of the top set or when crowding the last warmup
+  // bench stops adding big plates much earlier, so it climbs in smaller jumps
+  const cutoff = lift === 'bench' ? 0.6 : 0.85;
+
+  // always take the first plate if it fits, then stop past the cutoff
+  // or when crowding the last warmup
   const warmups = [];
   let base = bar;
-  while (base + jump <= target * 0.85 && base + jump <= lastWarmup - minStep / 2) {
+  while ((base === bar || base + jump <= target * cutoff) && base + jump <= lastWarmup - minStep / 2) {
     base += jump;
     warmups.push(base);
   }
@@ -112,6 +117,7 @@ function App() {
   const [plates, setPlates] = useState([{weight: 45, color: '#646cff', height: '9.81em'}])
   const [showWarmups, setShowWarmups] = useState(false)
   const [reps, setReps] = useState('1-3')
+  const [lift, setLift] = useState('squat/deadlift')
 
   useEffect(() => {
     setPlates(calculatePlates(weight, unit));
@@ -235,16 +241,27 @@ function App() {
         {showWarmups && (
           <>
             <div className="unit">
-              <button className={reps === '1-3' ? 'selected' : ''} onClick={() => setReps('1-3')}>
-                <h2>1-3</h2>
+              <button className={lift === 'squat/deadlift' ? 'selected' : ''} onClick={() => setLift('squat/deadlift')}>
+                <h2>sq/dl</h2>
               </button>
-              <h3>reps</h3>
-              <button className={reps === '4+' ? 'selected' : ''} onClick={() => setReps('4+')}>
-                <h2>4+</h2>
+              <h3>lift</h3>
+              <button className={lift === 'bench' ? 'selected' : ''} onClick={() => setLift('bench')}>
+                <h2>bench</h2>
               </button>
             </div>
+            {lift === 'squat/deadlift' && (
+              <div className="unit">
+                <button className={reps === '1-3' ? 'selected' : ''} onClick={() => setReps('1-3')}>
+                  <h2>1-3</h2>
+                </button>
+                <h3>reps</h3>
+                <button className={reps === '4+' ? 'selected' : ''} onClick={() => setReps('4+')}>
+                  <h2>4+</h2>
+                </button>
+              </div>
+            )}
             <ol className="warmupList">
-              {[...calculateWarmups(target, unit, reps), target].map((warmup, index, sets) => (
+              {[...calculateWarmups(target, unit, lift, reps), target].map((warmup, index, sets) => (
                 <li key={index} className={index === sets.length - 1 ? 'topSet' : ''}>
                   <span className="warmupWeight">{warmup} {unit}</span>
                   <span className="warmupPlates">
