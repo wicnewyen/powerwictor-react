@@ -157,11 +157,12 @@ function App() {
 
     const sortedEntries = Object.entries(plateCount).sort((a, b) => b[0] - a[0]);
 
+    const suffix = unit ? ` ${unit}` : '';
     sortedEntries.forEach(([key, value], index) => {
       if (index === sortedEntries.length - 1) {
-        output += `${value} x ${key} ${unit}`;
+        output += `${value} x ${key}${suffix}`;
       } else {
-        output += `${value} x ${key} ${unit}, `;
+        output += `${value} x ${key}${suffix}, `;
       }
     });
     return output;
@@ -247,7 +248,7 @@ function App() {
                 <li key={index} className={index === sets.length - 1 ? 'topSet' : ''}>
                   <span className="warmupWeight">{warmup} {unit}</span>
                   <span className="warmupPlates">
-                    {getPlateCount(calculatePlates(warmup, unit), unit) || 'empty bar'}
+                    {getPlateCount(calculatePlates(warmup, unit)) || 'empty bar'}
                   </span>
                 </li>
               ))}

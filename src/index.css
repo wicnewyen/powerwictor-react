@@ -226,8 +226,10 @@ input[type="number"] {
     font-size: 1em;
   }
 
+  /* #root is 430px wide, so size to the screen instead to keep phones narrower than that from clipping the plates */
   .warmupList {
-    width: 100%;
+    width: 100vw;
+    margin: 0;
     padding: 0 1em;
     box-sizing: border-box;
     font-size: 1em;
